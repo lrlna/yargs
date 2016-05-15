@@ -232,22 +232,20 @@ function Yargs (processArgs, cwd, parentRequire) {
 
     if (Array.isArray(max)) {
       max.forEach(function (key) {
-        self.demandOption(key, msg, maxMsg)
+        self.demandOption(key, msg)
       })
     } else if (typeof max !== 'number') {
-      maxMsg = msg
       msg = max
       max = Infinity
     }
 
     if (typeof keys === 'number') {
-      if (!options.demandedOption._) options.demandedOption._ = { count: 0, msg: null, maxMsg: null, max: max }
+      if (!options.demandedOption._) options.demandedOption._ = { count: 0, msg: null, max: max }
       options.demandedOption._.count = keys
       options.demandedOption._.msg = msg
-      options.demandedOption._.maxMsg = maxMsg
     } else if (Array.isArray(keys)) {
       keys.forEach(function (key) {
-        self.demandOption(key, msg, maxMsg)
+        self.demandOption(key, msg)
       })
     } else {
       if (typeof msg === 'string') {
@@ -255,18 +253,29 @@ function Yargs (processArgs, cwd, parentRequire) {
       } else if (msg === true || typeof msg === 'undefined') {
         options.demandedOption[keys] = { msg: undefined }
       }
-      if (typeof maxMsg === 'string') {
-        options.demandedOption[keys].maxMsg = maxMsg
-      } else if (maxMsg === true || typeof maxMsg === 'undefined') {
-        options.demandedOption[keys].maxMsg = undefined
-      }
     }
 
     return self
   }
 
   self.demandCommand = function (min, max, minMsg, maxMsg) {
-    
+    // you can provide the entire spectrum of params or
+    // just a min number and a minMsg
+
+    if (!options.demandedCommand._) options.demandedCommand._ = {}
+
+    if (typeof max !== 'number') {
+      minMsg = max
+      maxMsg = undefined
+    } else {
+      var count = max - min
+      options.demandedCommand._.count = count
+      if (typeof maxMsg === 'string') options.demandedCommand._.maxMsg = maxMsg
+    }
+
+    options.demandedCommand._.minMsg = minMsg
+
+    return self
   }
 
   self.getDemandedOption = function () {
