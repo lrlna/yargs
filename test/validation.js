@@ -59,10 +59,10 @@ describe('validation tests', function () {
     })
   })
 
-  describe('demand', function () {
+  describe('demandOption', function () {
     it('fails with standard "not enough" error message if msg is not defined', function (done) {
       yargs([])
-        .demand(1)
+        .demandOption(1)
         .fail(function (msg) {
           msg.should.equal('Not enough non-option arguments: got 0, need at least 1')
           return done()
@@ -72,7 +72,7 @@ describe('validation tests', function () {
 
     it('fails with standard "too many" error message if msg is not defined', function (done) {
       yargs(['a', 'b', 'c'])
-        .demand(1, 2)
+        .demandOption(1, 2)
         .fail(function (msg) {
           msg.should.equal('Too many non-option arguments: got 3, maximum of 2')
           return done()
@@ -82,7 +82,7 @@ describe('validation tests', function () {
 
     it('fails with substituted counts if "not enough" message is defined', function (done) {
       yargs([])
-        .demand(1, 'got $0, expected $1 ($0 / $1)')
+        .demandOption(1, 'got $0, expected $1 ($0 / $1)')
         .fail(function (msg) {
           msg.should.equal('got 0, expected 1 (0 / 1)')
           return done()
@@ -92,7 +92,7 @@ describe('validation tests', function () {
 
     it('fails with substituted counts if "too many" message is defined', function (done) {
       yargs(['a', 'b', 'c'])
-        .demand(1, 2, undefined, 'got $0, expected $1 ($0 / $1)')
+        .demandOption(1, 2, undefined, 'got $0, expected $1 ($0 / $1)')
         .fail(function (msg) {
           msg.should.equal('got 3, expected 1 (3 / 1)')
           return done()
@@ -104,7 +104,7 @@ describe('validation tests', function () {
       yargs(['koala'])
         .command('wombat', 'wombat burrows')
         .command('kangaroo', 'kangaroo handlers')
-        .demand(1)
+        .demandOption(1)
         .strict()
         .fail(function (msg) {
           msg.should.equal('Unknown argument: koala')
@@ -115,7 +115,7 @@ describe('validation tests', function () {
 
     it('does not fail in strict mode when no commands configured', function () {
       var argv = yargs('koala')
-        .demand(1)
+        .demandOption(1)
         .strict()
         .fail(function (msg) {
           expect.fail()
@@ -126,7 +126,7 @@ describe('validation tests', function () {
 
     it('fails when a required argument is missing', function (done) {
       yargs('-w 10 marsupial')
-        .demand(1, ['w', 'b'])
+        .demandOption(1, ['w', 'b'])
         .fail(function (msg) {
           msg.should.equal('Missing required argument: b')
           return done()
@@ -136,7 +136,7 @@ describe('validation tests', function () {
 
     it('fails when required arguments are present, but a command is missing', function (done) {
       yargs('-w 10 -m wombat')
-        .demand(1, ['w', 'm'])
+        .demandOption(1, ['w', 'm'])
         .fail(function (msg) {
           msg.should.equal('Not enough non-option arguments: got 0, need at least 1')
           return done()
@@ -146,7 +146,7 @@ describe('validation tests', function () {
 
     it('fails without a message if msg is null', function (done) {
       yargs([])
-        .demand(1, null)
+        .demandOption(1, null)
         .fail(function (msg) {
           expect(msg).to.equal(null)
           return done()
@@ -338,7 +338,7 @@ describe('validation tests', function () {
         })
         .option('some-option', {
           describe: 'some option',
-          demand: true,
+          demandOption: true,
           default: 88
         })
         .strict()
