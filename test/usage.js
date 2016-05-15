@@ -13,12 +13,12 @@ describe('usage tests', function () {
   })
 
   describe('demand options', function () {
-    describe('using .demand()', function () {
+    describe('using .demandOption()', function () {
       it('should show an error along with the missing arguments on demand fail', function () {
         var r = checkUsage(function () {
           return yargs('-x 10 -z 20')
             .usage('Usage: $0 -x NUM -y NUM')
-            .demand(['x', 'y'])
+            .demandOption(['x', 'y'])
             .wrap(null)
             .argv
         })
@@ -40,7 +40,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs('wombat -w 10 -y 10')
             .usage('Usage: $0 -w NUM -m NUM')
-            .demand(1, ['w', 'm'])
+            .demandOption(1, ['w', 'm'])
             .strict()
             .wrap(null)
             .argv
@@ -63,7 +63,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs('-w 10 -y 10')
             .usage('Usage: $0 -w NUM -m NUM')
-            .demand(1, ['w', 'm'])
+            .demandOption(1, ['w', 'm'])
             .strict()
             .wrap(null)
             .argv
@@ -87,7 +87,7 @@ describe('usage tests', function () {
           return yargs('wombat -w 10 -m 10')
             .usage('Usage: $0 -w NUM -m NUM')
             .command('wombat', 'wombat handlers')
-            .demand(1, ['w', 'm'])
+            .demandOption(1, ['w', 'm'])
             .strict()
             .wrap(null)
             .argv
@@ -188,11 +188,11 @@ describe('usage tests', function () {
       })
     })
 
-    it('should show an error along with a custom message on demand fail', function () {
+    it('should show an error along with a custom message on demandOption fail', function () {
       var r = checkUsage(function () {
         return yargs('-z 20')
         .usage('Usage: $0 -x NUM -y NUM')
-        .demand(['x', 'y'], 'x and y are both required to multiply all the things')
+        .demandOption(['x', 'y'], 'x and y are both required to multiply all the things')
         .wrap(null)
         .argv
       })
@@ -210,11 +210,11 @@ describe('usage tests', function () {
       r.exit.should.be.ok
     })
 
-    it('should return valid values when demand passes', function () {
+    it('should return valid values when demandOption passes', function () {
       var r = checkUsage(function () {
         return yargs('-x 10 -y 20')
         .usage('Usage: $0 -x NUM -y NUM')
-        .demand(['x', 'y'])
+        .demandOption(['x', 'y'])
         .wrap(null)
         .argv
       })
@@ -231,7 +231,7 @@ describe('usage tests', function () {
       var r = checkUsage(function () {
         return yargs('')
           .usage('Usage: foo')
-          .demand(1, null)
+          .demandOption(1, null)
           .wrap(null)
           .argv
       })
@@ -248,7 +248,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs(['foo', 'bar', 'apple'])
             .usage('Usage: foo')
-            .demand(2, 3)
+            .demandOption(2, 3)
             .wrap(null)
             .argv
         })
@@ -260,7 +260,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs(['foo', 'bar', 'apple', 'banana'])
             .usage('Usage: foo')
-            .demand(2, 3)
+            .demandOption(2, 3)
             .wrap(null)
             .argv
         })
@@ -275,7 +275,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs(['foo'])
             .usage('Usage: foo')
-            .demand(2, 3)
+            .demandOption(2, 3)
             .wrap(null)
             .argv
         })
@@ -290,7 +290,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs(['foo'])
             .usage('Usage: foo')
-            .demand(2, 3, 'pork chop sandwiches')
+            .demandOption(2, 3, 'pork chop sandwiches')
             .wrap(null)
             .argv
         })
@@ -517,7 +517,7 @@ describe('usage tests', function () {
     var r = checkUsage(function () {
       return yargs('1 2 3 --moo')
       .usage('Usage: $0 [x] [y] [z] {OPTIONS}')
-      .demand(3)
+      .demandOption(3)
       .argv
     })
     r.should.have.property('result')
@@ -532,7 +532,7 @@ describe('usage tests', function () {
     var r = checkUsage(function () {
       return yargs('1 2 --moo')
       .usage('Usage: $0 [x] [y] [z] {OPTIONS}')
-      .demand(3)
+      .demandOption(3)
       .wrap(null)
       .argv
     })
@@ -552,7 +552,7 @@ describe('usage tests', function () {
     var r = checkUsage(function () {
       return yargs('src --moo')
       .usage('Usage: $0 [x] [y] [z] {OPTIONS} <src> <dest> [extra_files...]')
-      .demand(2, 'src and dest files are both required')
+      .demandOption(2, 'src and dest files are both required')
       .wrap(null)
       .argv
     })
@@ -602,7 +602,7 @@ describe('usage tests', function () {
       return yargs('')
         .alias('f', 'foo')
         .default('f', 5)
-        .demand(1)
+        .demandOption(1)
         .wrap(null)
         .argv
     })
@@ -730,8 +730,8 @@ describe('usage tests', function () {
     it('should fail given an option argument that is not demanded', function () {
       var r = checkUsage(function () {
         var opts = {
-          foo: { demand: 'foo option', alias: 'f' },
-          bar: { demand: 'bar option', alias: 'b' }
+          foo: { demandOption: 'foo option', alias: 'f' },
+          bar: { demandOption: 'bar option', alias: 'b' }
         }
 
         return yargs('-f 10 --bar 20 --baz 30')
@@ -855,7 +855,7 @@ describe('usage tests', function () {
       return yargs('')
         .example('$0 something', 'description')
         .example('$0 something else', 'other description')
-        .demand(['y'])
+        .demandOption(['y'])
         .wrap(null)
         .argv
     })
@@ -881,8 +881,8 @@ describe('usage tests', function () {
           return yargs('-y 10 -z 20')
             .usage('Usage: $0 -x NUM [-y NUM]')
             .options({
-              'x': { description: 'an option', demand: true },
-              'y': { description: 'another option', demand: false }
+              'x': { description: 'an option', demandOption: true },
+              'y': { description: 'another option', demandOption: false }
             })
             .wrap(null)
             .argv
@@ -938,8 +938,8 @@ describe('usage tests', function () {
         return yargs('-w 10')
         .usage('Usage: $0 --width NUM [--height NUM]')
         .options({
-          'width': { description: 'Width', alias: 'w', demand: true },
-          'height': { description: 'Height', alias: 'h', demand: false }
+          'width': { description: 'Width', alias: 'w', demandOption: true },
+          'height': { description: 'Height', alias: 'h', demandOption: false }
         })
         .wrap(null)
         .argv
@@ -955,7 +955,7 @@ describe('usage tests', function () {
     it('should display usage', function () {
       var r = checkUsage(function () {
         return yargs(['--help'])
-          .demand(['y'])
+          .demandOption(['y'])
           .help('help')
           .wrap(null)
           .argv
@@ -1005,7 +1005,7 @@ describe('usage tests', function () {
             .help('help')
             .alias('help', 'h')
             .describe('some-opt', 'Some option')
-            .demand('some-opt')
+            .demandOption('some-opt')
             .wrap(null)
             .exitProcess(false)
             .argv
@@ -1035,7 +1035,7 @@ describe('usage tests', function () {
             .help('help')
             .alias('help', 'h')
             .describe('some-opt', 'Some option')
-            .demand('some-opt')
+            .demandOption('some-opt')
             .nargs('some-opt', 3)
             .wrap(null)
             .exitProcess(false)
@@ -1114,7 +1114,7 @@ describe('usage tests', function () {
         var r = checkUsage(function () {
           return yargs(['--version'])
             .version('version', 'Show version number', '1.0.1')
-            .demand('some-opt')
+            .demandOption('some-opt')
             .wrap(null)
             .exitProcess(false)
             .argv
@@ -1161,7 +1161,7 @@ describe('usage tests', function () {
         return yargs(['--foo'])
         .usage('Usage: $0 [options]')
         .options(opts)
-        .demand(['foo', 'bar'])
+        .demandOption(['foo', 'bar'])
         .showHelpOnFail(false, 'Specify --help for available options')
         .wrap(null)
         .argv
@@ -1190,7 +1190,7 @@ describe('usage tests', function () {
           .exitProcess(false)
           .usage('Usage: $0 [options]')
           .options(opts)
-          .demand(['foo'])
+          .demandOption(['foo'])
           .wrap(null)
           .argv
       })
@@ -1233,7 +1233,7 @@ describe('usage tests', function () {
           default: 'fairly-long-default',
           description: 'npm prefix used to locate globally installed npm packages'
         })
-        .demand('foo')
+        .demandOption('foo')
         .wrap(50)
         .argv
       })
@@ -1254,7 +1254,7 @@ describe('usage tests', function () {
             // create a giant string that should wrap.
             description: new Array((width + 1) * 5).join('s')
           })
-          .demand('foo')
+          .demandOption('foo')
           .argv
       })
 
@@ -1281,7 +1281,7 @@ describe('usage tests', function () {
             'i am a fairly long example',
             'description that is also fairly long'
           )
-          .demand('foo')
+          .demandOption('foo')
           .wrap(40)
           .argv
       })
@@ -1302,7 +1302,7 @@ describe('usage tests', function () {
       var r = checkUsage(function () {
         return yargs([])
         .usage('i am a fairly long usage string look at me go.')
-        .demand('foo')
+        .demandOption('foo')
         .wrap(20)
         .argv
       })
@@ -1319,7 +1319,7 @@ describe('usage tests', function () {
           .option('f', {
             alias: 'file',
             describe: noColorAddedDescr,
-            demand: true,
+            demandOption: true,
             type: 'string'
           })
           .help('h').alias('h', 'help')
@@ -1343,7 +1343,7 @@ describe('usage tests', function () {
           .option('f', {
             alias: 'file',
             describe: yellowDescription,
-            demand: true,
+            demandOption: true,
             type: 'string'
           })
           .help('h').alias('h', 'help')
@@ -1366,7 +1366,7 @@ describe('usage tests', function () {
         return yargs('')
           .command('upload', 'upload something')
           .command('download', 'download something from somewhere')
-          .demand('y')
+          .demandOption('y')
           .wrap(null)
           .argv
       })
@@ -1386,7 +1386,7 @@ describe('usage tests', function () {
         return yargs('')
           .command('upload', 'upload something')
           .command('secret', false)
-          .demand('y')
+          .demandOption('y')
           .wrap(null)
           .argv
       })
@@ -1405,7 +1405,7 @@ describe('usage tests', function () {
         return yargs('')
           .command('upload', 'upload something')
           .completion('completion', false)
-          .demand('y')
+          .demandOption('y')
           .wrap(null)
           .argv
       })
@@ -1684,7 +1684,7 @@ describe('usage tests', function () {
         return yargs('upload --help')
           .command('upload', 'upload something', {
             builder: function (yargs) {
-              return yargs.usage('Usage: program upload <something> [opts]').demand(1)
+              return yargs.usage('Usage: program upload <something> [opts]').demandOption(1)
             },
             handler: function (argv) {}
           })
@@ -1724,7 +1724,7 @@ describe('usage tests', function () {
       var r = checkUsage(function () {
         return yargs('')
           .epilog('for more info view the manual at http://example.com')
-          .demand('y')
+          .demandOption('y')
           .wrap(null)
           .argv
       })
@@ -1741,7 +1741,7 @@ describe('usage tests', function () {
       var r = checkUsage(function () {
         return yargs('')
           .epilog("Try '$0 --long-help' for more information")
-          .demand('y')
+          .demandOption('y')
           .wrap(null)
           .argv
       })
@@ -1943,7 +1943,7 @@ describe('usage tests', function () {
     it("should display 'required' string in help message if set for alias", function () {
       var r = checkUsage(function () {
         return yargs(['-h'])
-          .demand('foo')
+          .demandOption('foo')
           .alias('f', 'foo')
           .help('h')
           .wrap(null)
