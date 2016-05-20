@@ -90,7 +90,7 @@ function Yargs (processArgs, cwd, parentRequire) {
 
     var objectOptions = [
       'narg', 'key', 'alias', 'default', 'defaultDescription',
-      'config', 'choices', 'demandedOption'
+      'config', 'choices', 'demandedOption', 'demandedCommand'
     ]
 
     arrayOptions.forEach(function (k) {
@@ -258,22 +258,21 @@ function Yargs (processArgs, cwd, parentRequire) {
     return self
   }
 
-  self.demandCommand = function (min, max, minMsg, maxMsg) {
+  self.demandCommand = function (min, max, msg, maxMsg) {
     // you can provide the entire spectrum of params or
     // just a min number and a minMsg
 
-    if (!options.demandedCommand._) options.demandedCommand._ = {}
-
     if (typeof max !== 'number') {
-      minMsg = max
-      maxMsg = undefined
-    } else {
-      var count = max - min
-      options.demandedCommand._.count = count
+      msg = max
+      max = Infinity
+    } else if (typeof max === 'number') {
+      // var count = max - min
+      if (!options.demandedCommand._) options.demandedCommand._ = {count: 0, max: max, msg: null}
+      options.demandedCommand._.count = max
       if (typeof maxMsg === 'string') options.demandedCommand._.maxMsg = maxMsg
     }
 
-    options.demandedCommand._.minMsg = minMsg
+    options.demandedCommand._.msg = msg
 
     return self
   }
@@ -371,9 +370,12 @@ function Yargs (processArgs, cwd, parentRequire) {
       if (opt.alias) self.alias(key, opt.alias)
 
       var demandOption = opt.demandOption || opt.required || opt.require || opt.demand
+      var demandCommand = opt.demandCommand
 
       if (demandOption) {
         self.demandOption(key, demandOption)
+      } if (demandCommand) {
+        self.demandCommand(key, demandCommand)
       } if ('config' in opt) {
         self.config(key, opt.configParser)
       } if ('default' in opt) {
