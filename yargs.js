@@ -258,17 +258,24 @@ function Yargs (processArgs, cwd, parentRequire) {
     return self
   }
 
-  self.demandCommand = function (min, max, msg, maxMsg) {
+  self.demandCommand = function (keys, min, max, msg, maxMsg) {
     // you can provide the entire spectrum of params or
     // just a min number and a minMsg
 
-    if (typeof max !== 'number') {
+    if (Array.isArray(max)) {
+      max.forEach(function (key) {
+        self.demandOption(key, msg)
+      })
+    } else if (typeof max !== 'number') {
       msg = max
       max = Infinity
-    } else if (typeof max === 'number') {
+    }
+
+    if (typeof min === 'number') {
       // var count = max - min
-      if (!options.demandedCommand._) options.demandedCommand._ = {count: 0, max: max, msg: null}
-      options.demandedCommand._.count = max
+      if (!options.demandedCommand._) options.demandedCommand._ = {count: 0, min: min , msg: null}
+      options.demandedOption._.count = keys
+      options.demandedOpiton._.msg = msg
       if (typeof maxMsg === 'string') options.demandedCommand._.maxMsg = maxMsg
     }
 
