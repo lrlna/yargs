@@ -1,4 +1,4 @@
-  yargs
+yargs
 ========
 
 Yargs be a node.js library fer hearties tryin' ter parse optstrings.
@@ -15,7 +15,27 @@ With yargs, ye be havin' a map that leads straight to yer treasure! Treasure of 
 
 > Yargs is the official successor to optimist. Please feel free to submit issues and pull requests. If you'd like to contribute and don't know where to start, have a look at [the issue list](https://github.com/yargs/yargs/issues) :)
 
- parsing tricks
+table of contents
+=================
+
+1. [About](#about)
+2. [Projects using yargs](#projects-using-yargs)
+3. [Example](#example)
+4. [Methods](./docs/api.md)
+5. [Usage](./docs/usage.md)
+6. [Parsing tricks](#parsing-tricks)
+   - [stop parsing](#stop-parsing)
+   - [negate-parsing](#negate-parsing)
+   - [numbers](#numbers)
+   - [duplicates](#duplicates)
+   - [dot notation](#dot-notation)
+   - [short numbers](#short-numbers)
+7. [Contributing](#contribute)
+8. [Installation](#installation)
+9. [Configuration](#configuration)
+10. [Inspired by](#inspired-by)
+
+parsing tricks
 ==============
 
 stop parsing
