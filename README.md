@@ -35,6 +35,16 @@ table of contents
 9. [Configuration](#configuration)
 10. [Inspired by](#inspired-by)
 
+about
+=====
+
+
+projects using yargs
+====================
+
+example
+=======
+
 parsing tricks
 ==============
 
